@@ -1,0 +1,47 @@
+{
+  "name": "csi-site-2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^4.4.1",
+    "@react-three/drei": "^10.6.1",
+    "@react-three/fiber": "^9.3.0",
+    "@tabler/icons-react": "^3.34.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "@types/three": "^0.178.1",
+    "emailjs": "^4.0.3",
+    "framer-motion": "^12.23.12",
+    "gsap": "^3.13.0",
+    "lucide-react": "^0.534.0",
+    "motion": "^12.23.12",
+    "ogl": "^1.0.11",
+    "react": "^19.1.0",
+    "react-awesome-reveal": "^4.3.1",
+    "react-dom": "^19.1.0",
+    "react-intersection-observer": "^9.16.0",
+    "react-router-dom": "^7.7.1",
+    "tailwindcss": "^4.1.11",
+    "three": "^0.178.0",
+    "tsparticles": "^3.8.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.1",
+    "vite": "^7.0.4"
+  }
+}
