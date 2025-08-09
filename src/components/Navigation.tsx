@@ -10,35 +10,51 @@ import {
   X,
 } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logo from "../logo.png"; // Assuming logo.png is in src/assets
 
-export const Navigation: React.FC = () => {
+interface NavigationProps {
+  isHome?: boolean;
+}
+
+export const Navigation: React.FC<NavigationProps> = ({ isHome }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(false);
+  // `showNavbar` is now controlled by the scroll direction
+  const [showNavbar, setShowNavbar] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
-  const isHome = location.pathname === "/";
+  // We use a ref to store the previous scroll position without causing re-renders
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setShowNavbar(e.clientY < window.innerHeight / 2);
-    };
-
+    // Inside your useEffect
+    // Inside your useEffect
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 50);
+
+      // If scrolling down AND past the top of the page, hide the navbar
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setShowNavbar(false);
+      }
+      // If scrolling up OR at the very top of the page, show the navbar
+      else {
+        setShowNavbar(true);
+      }
+
+      // Update the ref
+      lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("scroll", handleScroll);
 
+    // Clean up the event listener
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
   const navItems = [
     { path: "/", label: "Home", icon: Code },
@@ -48,7 +64,6 @@ export const Navigation: React.FC = () => {
     { path: "/gallery", label: "Gallery", icon: Camera },
     { path: "/sponsors", label: "Sponsors", icon: Award },
     { path: "/contact", label: "Contact", icon: Mail },
-    // {path: '/membership', label: 'Join', icon: CirclePlus }  /// New Membership Page Icon
   ];
 
   return (
@@ -59,12 +74,13 @@ export const Navigation: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: -100, opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          className={`sticky top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
             scrolled
-              ? "bg-[#0f0f0f]/80 backdrop-blur-lg border-b border-white/10"
+              ? "bg-[#0f0f0f]/80 backdrop-blur-lg border-white/10"
               : "bg-transparent"
           }`}
         >
+          {/* ... Your JSX for the navigation bar remains the same ... */}
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16">
               {/* Logo */}
@@ -82,7 +98,6 @@ export const Navigation: React.FC = () => {
                   CSI SFIT
                 </span>
               </Link>
-
               {/* Desktop Nav */}
               <div className="hidden md:flex items-center space-x-1">
                 {navItems.map((item) => {
@@ -115,7 +130,6 @@ export const Navigation: React.FC = () => {
                   );
                 })}
               </div>
-
               {/* Mobile Toggle */}
               <motion.button
                 whileTap={{ scale: 0.95 }}
@@ -130,7 +144,6 @@ export const Navigation: React.FC = () => {
               </motion.button>
             </div>
           </div>
-
           {/* Mobile Nav */}
           <AnimatePresence>
             {isOpen && (

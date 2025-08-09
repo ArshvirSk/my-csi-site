@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import Footer from "./components/Footer";
 import { Navigation } from "./components/Navigation";
 import ShiningStars from "./components/ShiningStars";
@@ -14,11 +14,14 @@ import { Sponsors } from "./pages/Sponsors";
 import { Team } from "./pages/Team";
 
 function App() {
+  const location = useLocation();
+
   return (
-    <Router>
-      <div className="relative min-h-screen bg-[#0f0f0f] text-white">
-        <ShiningStars count={50} />
-        <Navigation />
+    <div>
+      <div className="relative min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm text-white">
+        <ShiningStars count={150} />
+
+        {location.pathname !== "/" && <Navigation />}
         <AnimatePresence mode="wait">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -33,8 +36,8 @@ function App() {
           </Routes>
         </AnimatePresence>
       </div>
-      <Footer />
-    </Router>
+      {location.pathname !== "/" && <Footer />}
+    </div>
   );
 }
 

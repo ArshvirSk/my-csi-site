@@ -5,6 +5,10 @@ creating the scroll space, while the inner 3D canvas is fixed
 within that wrapper.
 */
 
+.logo-w {
+  width: calc(1 / 8.35 * 100%);
+}
+
 .canvas-section {
   position: relative;
   min-height: 250vh; /* This defines the scroll duration for the animation. */
