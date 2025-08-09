@@ -19,8 +19,6 @@ function App() {
   return (
     <div>
       <div className="relative min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm text-white">
-        <ShiningStars count={150} />
-
         {location.pathname !== "/" && <Navigation />}
         <AnimatePresence mode="wait">
           <Routes>
@@ -35,7 +33,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AnimatePresence>
+        <ShiningStars count={100} />
       </div>
+
       {location.pathname !== "/" && <Footer />}
     </div>
   );

@@ -12,50 +12,20 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { motion, MotionValue, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import Image1 from "../assets/home-parallax/FIGMA 101 WORKSHOP.png";
+import Image2 from "../assets/home-parallax/FLASK FORWARD WORKSHOP.png";
+import Image3 from "../assets/home-parallax/LLM WORKSHOP.png";
+import Image4 from "../assets/home-parallax/SPACE DAY 1.jpg";
+import Image5 from "../assets/home-parallax/SPACE DAY 2.jpg";
+import Image6 from "../assets/home-parallax/TEAM 24 PHOTO.jpg";
+import Footer from "../components/Footer";
 import { GlassCard } from "../components/GlassCard";
 import logo from "../logo-nobg.png";
-import Footer from "../components/Footer";
-
-interface BoxProps {
-  direction: "left" | "right";
-  x: MotionValue<string>; // Accept the MotionValue for x as a prop
-}
-
-const Box = ({ direction, x }: BoxProps) => {
-  return (
-    <motion.div
-      style={{
-        x, // Apply the animated x value here
-        left: direction === "left" ? "5vw" : "auto",
-        right: direction === "right" ? "5vw" : "auto",
-      }}
-      className="absolute top-[60vh] h-40 w-1/4 bg-gray-500 rounded-lg"
-    ></motion.div>
-  );
-};
-
-export default Box;
 
 export const Home: React.FC = () => {
-  const sectionRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress, scrollY } = useScroll();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLogoVisible, setIsLogoVisible] = useState(false);
-  const location = useLocation();
-  const statsRef = React.useRef(null);
-  const statsInView = useInView(statsRef, {
-    once: true,
-    amount: 0.1,
-  });
-  const featuresRef = React.useRef(null);
-  const featuresInView = useInView(featuresRef, {
-    once: true,
-    amount: 0.1,
-  });
-
   const navItems = [
     { path: "/", label: "Home", icon: Code },
     { path: "/about", label: "About", icon: Users },
@@ -100,12 +70,41 @@ export const Home: React.FC = () => {
     },
   ];
 
+  // An array of image objects to display.
+  // Each object has a src URL and a unique animation variant.
+  // An array of image objects for parallax.
+  const images = [
+    { src: Image1, alt: "Parallax Image 1" },
+    { src: Image2, alt: "Parallax Image 2" },
+    { src: Image3, alt: "Parallax Image 3" },
+    { src: Image4, alt: "Parallax Image 4" },
+    { src: Image5, alt: "Parallax Image 5" },
+    { src: Image6, alt: "Parallax Image 6" },
+  ];
+
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+  const contentRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLogoVisible, setIsLogoVisible] = useState(false);
+  const location = useLocation();
+  const statsRef = React.useRef(null);
+  const statsInView = useInView(statsRef, {
+    once: true,
+    amount: 0.1,
+  });
+  const featuresRef = React.useRef(null);
+  const featuresInView = useInView(featuresRef, {
+    once: true,
+    amount: 0.1,
+  });
+
   useEffect(() => {
     const handleScroll = () => {
       const heroSection = sectionRef.current;
       if (heroSection) {
         // Calculate when the hero section is no longer in view
-        const isPastHero = window.scrollY > heroSection.clientHeight + 2000;
+        const isPastHero = window.scrollY > heroSection.clientHeight + 1000;
         setIsLogoVisible(isPastHero);
       }
     };
@@ -115,30 +114,45 @@ export const Home: React.FC = () => {
     };
   }, []);
 
-  const width = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.5],
-    ["20%", "30%", "70%"]
-  );
-
   const lineWidth = useTransform(scrollYProgress, [0, 0.4], ["52%", "0%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0]);
+  // const opacity = useTransform(scrollYProgress, [0, 0.1, 0.15, 1], [0, 0, 1, 1]);
   const opacityButs = useTransform(scrollYProgress, [0, 0.03], [1, 0]);
+  const display = useTransform(scrollYProgress, [0.02, 0.03], ["flex", "none"]);
 
   // Inside the Home component
-  const xLeft = useTransform(scrollYProgress, [0.4, 0.5], ["-100vw", "0vw"]);
-  const xRight = useTransform(scrollYProgress, [0.5, 0.6], ["100vw", "0vw"]);
+  const yUp1 = useTransform(
+    scrollYProgress,
+    [0.05, 0.1, 0.2, 0.25],
+    ["100vw", "1vw", "1vw", "-100vw"]
+  );
+  const t1Opacity = useTransform(
+    scrollYProgress,
+    [0.094, 0.1, 0.2, 0.205],
+    [0, 1, 1, 0]
+  );
 
-  const y = useTransform(scrollYProgress, [0, 0.4], [0, -396]);
-  const x = useTransform(scrollYProgress, [0, 0.4], [0, -578]);
+  const yUp2 = useTransform(
+    scrollYProgress,
+    [0.205, 0.21, 0.27, 0.45],
+    ["100vw", "-3.5vw", "-3.5vw", "-100vw"]
+  );
+  const t2Opacity = useTransform(
+    scrollYProgress,
+    [0.2095, 0.21, 0.27, 0.279],
+    [0, 1, 1, 0]
+  );
+
+  const yUp3 = useTransform(scrollYProgress, [0.27, 0.28], ["100vw", "-9vw"]);
+  const t3Opacity = useTransform(scrollYProgress, [0.278, 0.28], [0, 1]);
+
+  const y = useTransform(scrollYProgress, [0, 0.1], [0, -337]);
+  const x = useTransform(scrollYProgress, [0, 0.1], [0, -578]);
   const imgWidth = useTransform(
     scrollYProgress,
-    [0, 0.2],
+    [0, 0.1],
     ["calc(1/3 * 100%)", "calc(1/32 * 100%)"]
   );
-  const imgHeight = useTransform(scrollYProgress, [0, 0.3], ["100%", "100%"]);
-
-  const x1 = useTransform(scrollYProgress, [0.2, 0.4], ["-800vw", "-20vw"]);
+  const imgHeight = useTransform(scrollYProgress, [0, 0.1], ["100%", "100%"]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm z-[9999]">
@@ -266,27 +280,21 @@ export const Home: React.FC = () => {
             style={{ width: lineWidth }}
             className="absolute right-[-10vw] top-[38.3vh] w-1/2 h-[9.3px] bg-white drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
           ></motion.div>
-
-          {/* <Box direction="left" x={xLeft} />
-          <Box direction="right" x={xRight} /> */}
           <motion.img
             src={logo}
             alt="CSI Logo"
-            className="object-contain invert p-0 m-0 select-none pointer-events-none drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] mb-[-3.5rem] z-20"
+            className="object-contain invert pt-[7.15rem] m-0 select-none pointer-events-none drop-shadow-[0_0_10px_rgba(255,255,255,0.5)] mb-[-3.5rem] z-20"
             draggable={false}
             style={{ width: imgWidth, height: imgHeight, y, x }}
           />
-
           <motion.div
-            style={{ opacity: opacityButs }}
-            className={`flex flex-col sm:flex-row gap-4 justify-center items-center ${
-              opacityButs === 0 ? "hidden" : ""
-            } `}
+            style={{ opacity: opacityButs, display }}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <button className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 to="/membership" //Added Page Address Location and changed Color(below)
-                className="group relative px-8 py-4 text-white bg-[#1A5AFF]/10 border border-[#1A5AFF]/20 font-semibold rounded-xl shadow-lg hover:shadow-[#ff6b00]/25 transition-all duration-300 transform hover:scale-105"
+                className="group relative px-8 py-4 text-white bg-[#0f1629] border border-[#1A5AFF]/20 font-semibold rounded-xl shadow-lg hover:shadow-[#2d4277] transition-all duration-300 transform hover:scale-105"
               >
                 <span className="flex items-center space-x-2">
                   <span>Join CSI SFIT</span>
@@ -298,7 +306,7 @@ export const Home: React.FC = () => {
             <button className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
                 to="/membership" //Added Page Address Location and changed Color(below)
-                className="group relative px-8 py-4 text-white bg-[#1A5AFF]/10 border border-[#1A5AFF]/20 font-semibold rounded-xl shadow-lg hover:shadow-[#ff6b00]/25 transition-all duration-300 transform hover:scale-105"
+                className="group relative px-8 py-4 text-white bg-[#0f1629] border border-[#1A5AFF]/20 font-semibold rounded-xl shadow-lg hover:shadow-[#2d4277] transition-all duration-300 transform hover:scale-105"
               >
                 <span className="flex items-center space-x-2">
                   <span>View Events</span>
@@ -307,7 +315,6 @@ export const Home: React.FC = () => {
               </Link>
             </button>
           </motion.div>
-
           <motion.div
             style={{ width: lineWidth }}
             className="absolute left-[-10vw] top-[54.3vh] w-1/2 h-[5.5px] bg-white drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
@@ -317,8 +324,53 @@ export const Home: React.FC = () => {
             className="absolute right-[-10vw] top-[54.2vh] w-1/2 h-[6px] bg-white drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
           ></motion.div>
 
+          {/* <SplitText
+            text="Hello, GSAP!"
+            className=""
+            delay={100}
+            duration={0.6}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="100px"
+            textAlign="center"
+            onLetterAnimationComplete={handleAnimationComplete}
+          /> */}
+
+          <motion.h1
+            style={{ y: yUp1, opacity: t1Opacity }}
+            className="text-6xl md:text-8xl font-bold text-white"
+          >
+            We are{" "}
+            <span className="bg-[linear-gradient(135deg,#40E0D0_0%,#1A5AFF_50%,#40E0D0_100%)] bg-clip-text text-transparent">
+              student innovators.
+            </span>
+          </motion.h1>
+
+          <motion.h1
+            style={{ y: yUp2, opacity: t2Opacity }}
+            className="text-6xl md:text-8xl font-bold text-white"
+          >
+            We are{" "}
+            <span className="bg-[linear-gradient(135deg,#40E0D0_0%,#1A5AFF_50%,#40E0D0_100%)] bg-clip-text text-transparent">
+              tech builders.
+            </span>
+          </motion.h1>
+
+          <motion.h1
+            style={{ y: yUp3, opacity: t3Opacity }}
+            className="text-6xl md:text-8xl font-bold text-white"
+          >
+            We are{" "}
+            <span className="bg-[linear-gradient(135deg,#40E0D0_0%,#1A5AFF_50%,#40E0D0_100%)] bg-clip-text text-transparent">
+              CSI
+            </span>
+          </motion.h1>
+
           <motion.video
-            className="absolute w-screen h-[105vh] object-cover -z-10 grayscale brightness-70"
+            className="absolute w-screen h-[105vh] object-cover top-0 -z-10 grayscale brightness-25"
             // style={{ opacity }}
             autoPlay
             loop
@@ -328,7 +380,10 @@ export const Home: React.FC = () => {
           </motion.video>
         </section>
 
-        <div className="h-[300vh] min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm" />
+        <div
+          ref={contentRef}
+          className="h-[125vh] min-h-screen bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm"
+        />
 
         <section className="px-[20rem] py-20 text-center text-white text-2xl font-bold mx-auto relative z-[200] bg-gradient-to-b from-[#0f172a] via-[#1e293b] to-[#020617] backdrop-blur-sm">
           <div>
@@ -491,74 +546,6 @@ export const Home: React.FC = () => {
                 ))}
               </div>
             </div>
-
-            {/* Team Section */}
-            <section className="py-20 relative">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8 }}
-                  className="text-center mb-16"
-                >
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Meet the{" "}
-                    <span className="bg-gradient-to-r from-[#40E0D0] to-[#1A5AFF] bg-clip-text text-transparent">
-                      Team
-                    </span>
-                  </h2>
-                  <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-                    The passionate people behind the success of CSI SFIT.
-                  </p>
-                </motion.div>
-
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                  {[
-                    {
-                      name: "Arshvir Singh",
-                      role: "Chairperson",
-                      image: "https://i.pravatar.cc/150?img=32",
-                    },
-                    {
-                      name: "Aarushi Mehta",
-                      role: "Vice Chairperson",
-                      image: "https://i.pravatar.cc/150?img=47",
-                    },
-                    {
-                      name: "Kunal Deshmukh",
-                      role: "Technical Lead",
-                      image: "https://i.pravatar.cc/150?img=22",
-                    },
-                    {
-                      name: "Nikita Jain",
-                      role: "Event Manager",
-                      image: "https://i.pravatar.cc/150?img=65",
-                    },
-                  ].map((member, index) => (
-                    <motion.div
-                      key={member.name}
-                      initial={{ opacity: 0, y: 40 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: index * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <GlassCard className="group p-6 text-center bg-white/5 border border-white/10 backdrop-blur-lg rounded-2xl transition-all duration-300 hover:scale-[1.03]">
-                        <img
-                          src={member.image}
-                          alt={member.name}
-                          className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-4 border-[#40E0D0]/30 shadow-lg group-hover:scale-105 transition"
-                        />
-                        <h3 className="text-lg font-semibold text-white">
-                          {member.name}
-                        </h3>
-                        <p className="text-sm text-gray-400">{member.role}</p>
-                      </GlassCard>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </section>
           </section>
         </section>
       </div>
